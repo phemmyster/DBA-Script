@@ -1,0 +1,4 @@
+USE master;
+GO
+ALTER DATABASE [Fill DB Name] SET ENCRYPTION OFF;
+GO
