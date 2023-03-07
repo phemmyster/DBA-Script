@@ -1,0 +1,2 @@
+select db_name(database_id), encryption_state 
+from sys.dm_database_encryption_keys;
