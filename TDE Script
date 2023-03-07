@@ -45,3 +45,9 @@ FROM FILE = 'C:\Temp\TDE_Cert'
 WITH PRIVATE KEY (FILE = 'C:\TDECert_Key.pvk',
 DECRYPTION BY PASSWORD = 'InsertStrongPasswordHere' );
 
+/* visit this link for better clearification
+
+
+https://www.sqlshack.com/remove-transparent-data-encryption-tde-from-sql-server-user-databases/
+
+*/
