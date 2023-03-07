@@ -1,0 +1,3 @@
+SELECT name, is_encrypted
+FROM sys.databases
+Go
