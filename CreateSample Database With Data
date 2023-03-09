@@ -1,0 +1,19 @@
+-- create 3 dbs
+create DATABASE db1
+CREATE DATABASE db2
+CREATE DATABASE db3
+
+use db1
+CREATE TABLE teacher (Id int, name VARCHAR(20))
+INSERT into teacher values (1001, "Femi")
+
+
+use db2
+CREATE TABLE students (Id int, name VARCHAR(20))
+INSERT into students values (1, "Kemi")
+INSERT into students values (2, "Remi")
+
+
+-- backup 
+backup DATABASE db1 to disk = 'C:\path\db1_full.bak'
+backup DATABASE db2 to disk = 'C:\path\db2_full.bak'
