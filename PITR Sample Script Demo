@@ -1,0 +1,34 @@
+-- DB must be in full or bulk recovery model
+
+-- create a DB
+CREATE database dbPIRT
+
+-- create an empty TABLE
+CREATE table dbo.product (id int, name VARCHAR(20))
+
+-- confirm the table is empty
+select * from product
+
+
+
+-- insert record 1 and 2
+insert into product values (101, 'Record 1')
+
+insert into product values (102, 'Record 2')
+
+BACKUP database dbPIRT to disk = 'C:\path\dbPIRT_full1.bak'  -- note the time   {6pm}
+
+
+
+insert into product values (103, 'Record 3')
+BACKUP DATABASE dbPIRT to disk = 'C:\path\dbPIRT_diff1.trn' -- note the time, let it be a minute interval after the full back up {6.01 pm}
+with differential
+
+insert into product values (104, 'Record 4')
+BACKUP log dbPIRT to disk = 'C:\path\dbPIRT_log1.trn'  -- note the time, let it be a minute interval after the full back up {6.02 pm}
+
+insert into product values (105, 'Record 5'  -- inserted @ 6.03 pm
+
+delete from product where id = 104  -- delete after 2 minutes ( 6.05 pm )
+
+BACKUP log dbPIRT to disk = 'C:\path\dbPIRT_log2.trn' -- 6.06 pm
