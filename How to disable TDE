@@ -1,0 +1,31 @@
+-- HOW to disable or remove the TDE and drops the keys
+
+-- step 1: disable the encryption (ie TDE) on the database
+use master
+go
+
+alter database <dbname>
+set encryption off
+go
+
+-- step 2 : if u dnt want to have the cert and master key > u want to remove/delete it
+-- drop the db encryption key
+
+use <dbname>
+Drop DATABASE ENCRYPTION KEY
+GO
+
+-- drop the cert
+USE MASTER
+GO
+DROP CERTIFICATE TDECert -- name of the cert
+go
+
+-- finally drop the master key
+
+use mastergo
+drop master key
+go
+
+
+select * from sys.certificates
