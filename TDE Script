@@ -1,53 +1,61 @@
---Create Master Key
 
-USE Master;
-GO
-CREATE MASTER KEY ENCRYPTION
-BY PASSWORD='InsertStrongPasswordHere';
-GO
+/* step to folLow 
 
---Create Certificate protected by Master Key
+create a databasese master key of the master database
+create a backup certificate
+backup the database
 
-CREATE CERTIFICATE TDE_Cert
-WITH 
-SUBJECT='Database_Encryption';
-GO
+*/
 
---Create Database Encryption Key (DEK)
+-- create a databasese master key of the master database \ CHK MASTER DB > SECURITY | CERTIFICATE
 
-USE <DB>
-GO
-CREATE DATABASE ENCRYPTION KEY
-WITH ALGORITHM = AES_256
-ENCRYPTION BY SERVER CERTIFICATE TDE_Cert;
-GO
-
---Enable Encryption
+create master key encryption by password = 'Password@1.'  -- master db must be selected
 
 
-ALTER DATABASE <DB>
-SET ENCRYPTION ON;
-GO
+-- create a backup certificate
 
---Backup Certificate
+create certificate myTestCert with subject = 'mysubjectline'
 
-BACKUP CERTIFICATE TDE_Cert
-TO FILE = 'C:\temp\TDE_Cert'
-WITH PRIVATE KEY (file='C:\temp\TDE_CertKey.pvk',
-ENCRYPTION BY PASSWORD='InsertStrongPasswordHere') 
+-- backup the database
+backup database test to disk = 'c:\path\tesk.bak'
+with encryption (algorithm = AES_256, SERVER CERTIFICATE = myTestCert)
 
---Restoring a Certificate
+
+-- backup cert in dthe source old database
+
+backup certificate myTestCert to file = 'c:\path\Test_db_certificate.cert'
+with private key (file = 'c:\path\Test_dbkey.key',
+encryption by password = 'Password@1.')
+
+/*
+you are now in the ssms of the other instance.
+
+to restore encrypted Backup   | u will need the cert and the key  and the .bak of the db in d new loaction 
+Copy to d loaction where u need the new cert
+
+- u need the certificate that is used to encrypt the backup file and shle be available on the instance dt u r restoring ur backup file
+- u the user acct performing d restore must have VIEW DEFINITION permission on the cert/key
+
+steps
+backup cert in d old database
+create master key in d new location master db 
+create certificate from the backup cert of source
+restore a db to a new location
+*/
+
+-- create master key in d new location
+
+create master key encryption by password = 'Password@1.'
+
+-- create certificate from the backup cert of source
 
 USE MASTER
 GO
-CREATE CERTIFICATE TDECert
-FROM FILE = 'C:\Temp\TDE_Cert'
-WITH PRIVATE KEY (FILE = 'C:\TDECert_Key.pvk',
-DECRYPTION BY PASSWORD = 'InsertStrongPasswordHere' );
+CREATE CERTIFICATE myTestCert
+FROM FILE = 'C:\path\Test_db_certificate.cert'
+WITH PRIVATE KEY (FILE = 'C:\path\Test_dbkey.key',
+DECRYPTION BY PASSWORD = 'Password@1.' );
 
-/* visit this link for better clearification
+-- Restore a DATABASE
 
-
-https://www.sqlshack.com/remove-transparent-data-encryption-tde-from-sql-server-user-databases/
-
-*/
+restore database test from disk = 'c:\path\test.bak'
