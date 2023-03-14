@@ -1,0 +1,8 @@
+/*
+Query Store automatically captures a history of queries, plans, and runtime statistics, and retains these for your review. 
+It separates data by time windows so you can see database usage patterns and understand when query plan changes happened on the server.
+
+*/
+
+ALTER DATABASE Practise -- where Practise is the name of the query store
+SET QUERY_STORE = ON (OPERATION_MODE = READ_WRITE);
