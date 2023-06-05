@@ -5,13 +5,13 @@ CREATE DATABASE db3
 
 use db1
 CREATE TABLE teacher (Id int, name VARCHAR(20))
-INSERT into teacher values (1001, "Femi")
+INSERT into teacher values (1001, 'Femi')
 
 
 use db2
 CREATE TABLE students (Id int, name VARCHAR(20))
-INSERT into students values (1, "Kemi")
-INSERT into students values (2, "Remi")
+INSERT into students values (1, 'Kemi')
+INSERT into students values (2, 'Remi')
 
 
 -- backup 
